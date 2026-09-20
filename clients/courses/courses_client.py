@@ -3,9 +3,9 @@ from typing import TypedDict
 from httpx import Response
 
 from clients.api_client import APIClient
-from clients.files.files_client import File
-from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
-from clients.users.private_users_client import User
+from clients.files.files_schema import FileSchema
+from clients.private_http_builder import AuthenticationUserSchema, get_private_http_client
+from clients.users.users_schema import UserSchema
 
 
 # Добавили описание структуры курса
@@ -18,9 +18,9 @@ class Course(TypedDict):
     maxScore: int
     minScore: int
     description: str
-    previewFile: File  # Вложенная структура файла
+    previewFile: FileSchema  # Вложенная структура файла
     estimatedTime: str
-    createdByUser: User  # Вложенная структура пользователя
+    createdByUser: UserSchema  # Вложенная структура пользователя
 
 
 class GetCoursesQueryDict(TypedDict):
@@ -120,7 +120,7 @@ class CoursesClient(APIClient):
         return response.json()
 
 
-def get_courses_client(user: AuthenticationUserDict) -> CoursesClient:
+def get_courses_client(user: AuthenticationUserSchema) -> CoursesClient:
     """
     Функция создаёт экземпляр CoursesClient с уже настроенным HTTP-клиентом.
 
