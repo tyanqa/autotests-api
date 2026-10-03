@@ -1,4 +1,4 @@
-from clients.errors_schema import ValidationErrorSchema, ValidationErrorResponseSchema
+from clients.errors_schema import ValidationErrorSchema, ValidationErrorResponseSchema, InternalErrorResponseSchema
 from tools.assertions.base import assert_equal, assert_length
 
 
