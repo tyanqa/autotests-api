@@ -11,10 +11,12 @@ from clients.exercises.exercises_schema import (
     UpdateExerciseResponseSchema
 )
 from fixtures.courses import CourseFixture
+from clients.errors_schema import InternalErrorResponseSchema
 from fixtures.exercises import ExerciseFixture
 from tools.assertions.base import assert_status_code
 from tools.assertions.exercises import (
     assert_create_exercise_response,
+    assert_exercise_not_found_response,
     assert_get_exercise_response,
     assert_update_exercise_response
 )
@@ -69,3 +71,22 @@ class TestExercises:
 
         # Валидируем JSON-схему ответа
         validate_json_schema(response.json(), response_data.model_json_schema())
+
+    def test_delete_exercise(self, exercises_client: ExercisesClient, function_exercise: ExerciseFixture):
+        # Удаляем задание, созданное фикстурой
+        delete_response = exercises_client.delete_exercise_api(function_exercise.response.exercise.id)
+
+        # Проверяем статус-код ответа на удаление
+        assert_status_code(delete_response.status_code, HTTPStatus.OK)
+
+        # Пытаемся получить удаленное задание
+        get_response = exercises_client.get_exercise_api(function_exercise.response.exercise.id)
+        response_data = InternalErrorResponseSchema.model_validate_json(get_response.text)
+
+        # Проверяем, что сервер вернул 404 Not Found
+        assert_status_code(get_response.status_code, HTTPStatus.NOT_FOUND)
+        # Проверяем, что в ответе содержится ошибка "Exercise not found"
+        assert_exercise_not_found_response(response_data)
+
+        # Валидируем JSON-схему ответа
+        validate_json_schema(get_response.json(), response_data.model_json_schema())
