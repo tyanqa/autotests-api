@@ -1,9 +1,11 @@
 from typing import Any
 
+import allure  # Импортируем allure
 from jsonschema import validate
 from jsonschema.validators import Draft202012Validator
 
 
+@allure.step("Validate JSON schema")  # Добавили allure шаг
 def validate_json_schema(instance: Any, schema: dict) -> None:
     """
     Проверяет, соответствует ли JSON-объект (instance) заданной JSON-схеме (schema).
