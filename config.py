@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import BaseModel, HttpUrl, FilePath
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -24,6 +26,7 @@ class Settings(BaseSettings):
 
     test_data: TestDataConfig
     http_client: HTTPClientConfig
+    allure_results_dir: Path
 
 
 # Инициализируем настройки
