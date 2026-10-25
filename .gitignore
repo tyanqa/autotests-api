@@ -1,12 +1,19 @@
+# vscode (общие настройки проекта храним в репозитории)
+.vscode/*
+!.vscode/settings.json
+
+# python
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+
+# allure
+allure-results
+allure-report
+
+# env
 .env
 
-__pycache__/
-*.pyc
-.venv/
-.pytest_cache/
-.idea/
-
-allure-results/
-allure-report/
-
+# macos
 .DS_Store
